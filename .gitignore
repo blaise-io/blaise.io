@@ -1,0 +1,11 @@
+# System - and IDE generated files
+.idea
+.DS_Store
+.sass-cache
+.Trashes
+Thumbs.db
+desktop.ini
+
+# Generate yourself
+*.js
+*.css

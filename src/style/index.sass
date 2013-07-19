@@ -1,0 +1,79 @@
+@import 'variables'
+@import 'mixins'
+
+html *
+    margin: 0
+    padding: 0
+
+html, body
+    height: 100%
+
+img
+    display: block
+
+html
+    background-image: linear-gradient(55deg, #0ed, #77f, #a7f, #0ed, #77f, #a7f)
+    min-height: 100%
+    font-family: helvetica, sans-serif
+    background-size: 100% 400%
+    background-position: 0 -420%
+    animation: move 30s linear infinite
+    color: $c-text
+
+@keyframes move
+    0%
+        background-position: 0 0
+    100%
+        background-position: 0 -400%
+
+.cards
+    height: 100%
+    overflow: auto
+
+.card-base
+    background: #fff
+    padding: 15px
+
+.card
+    @extend .card-base
+    width: 400px
+    margin: 0 0 15px
+    &:first-child
+        margin-top: 30px
+
+.me
+    @extend .card-base
+    float: left
+    width: 300px
+    margin: 30px
+
+
+
+figure
+    margin: 0 0 12px
+
+h1
+    color: $c-header
+    font: 36px/36px georgia, sans-serif
+    margin: 0 0 8px
+
+    time
+        color: $c-header
+        float: right
+//
+//.overlay
+//    color: rgba(0, 0, 0, 0)
+//    position: absolute
+//    top: 0
+//    left: 10px
+//
+//@each $prefix in $prefixes-selection
+//    .overlay#{$prefix}
+//        background: rgba(0, 0, 0, 0)
+//        color: #fff
+//        text-shadow: 1px -1px $c-header, 2px 1px $c-header, -1px 1px $c-header, -1px -1px $c-header
+//
+//canvas
+//    position: absolute
+//    user-select: none
+//    -moz-user-select: none
