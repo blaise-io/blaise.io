@@ -1,5 +1,6 @@
 @import 'variables'
 @import 'mixins'
+@import 'font'
 
 html *
     margin: 0
@@ -7,54 +8,109 @@ html *
 
 html, body
     height: 100%
+    overflow: hidden
 
 img
     display: block
 
-html
-    background-image: linear-gradient(55deg, #0ed, #77f, #a7f, #0ed, #77f, #a7f)
-    min-height: 100%
-    font-family: helvetica, sans-serif
-    background-size: 100% 400%
-    background-position: 0 -420%
-    animation: move 30s linear infinite
+body
+    background: #e3e
+    font: 14px/16px $font-body
     color: $c-text
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1) inset
 
-@keyframes move
+.bg
+    @each $prefix in $prefixes
+        background-image: #{$prefix}linear-gradient(26.3deg, #e3e, #0ae, #e3e, #0ae, #e3e, #0ae, #e3e)
+        #{$prefix}animation: scroll 30s linear infinite
+    background-repeat: repeat
+    background-size: 300em 300em
+    background-position: 80em 0
+    position: absolute
+    top: 0
+    left: -300em
+    right: 0
+    bottom: 0
+
+@-webkit-keyframes scroll
     0%
-        background-position: 0 0
+        -webkit-transform: translate3d(300em, 0, 0)
     100%
-        background-position: 0 -400%
+        -webkit-transform: translate3d(0, 0, 0)
+
+@-moz-keyframes scroll
+    0%
+        -moz-transform: translate3d(300em, 0, 0)
+    100%
+        -moz-transform: translate3d(0, 0, 0)
+
+@-ms-keyframes scroll
+    0%
+        -ms-transform: translate3d(300em, 0, 0)
+    100%
+        -ms-transform: translate3d(0, 0, 0)
+
+@keyframes scroll
+    0%
+        transform: translate3d(300em, 0, 0)
+    100%
+        transform: translate3d(0, 0, 0)
+
+%card-base
+    position: relative
+    width: 400px
+    background-color: #fff
+    padding: 15px
+    @each $prefix in $prefixes
+        #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.25)
+
+.me
+    @extend %card-base
+    float: left
+    margin: 30px 0 0 30px
 
 .cards
     height: 100%
     overflow: auto
-
-.card-base
-    background: #fff
-    padding: 15px
+    padding: 0 1px
 
 .card
-    @extend .card-base
-    width: 400px
-    margin: 0 0 15px
+    @extend %card-base
+    margin: 0 0 1px
+    transform-style: preserve-3d
+    transition: transform 100ms ease
+
     &:first-child
         margin-top: 30px
 
-.me
-    @extend .card-base
-    float: left
-    width: 300px
-    margin: 30px
+    &:last-child
+        margin-bottom: 30px
 
+.top
+    @each $prefix in $prefixes
+        #{$prefix}perspective-origin: bottom center
+        #{$prefix}transform-origin: bottom center
 
+.bottom
+    @each $prefix in $prefixes
+        #{$prefix}perspective-origin: top center
+        #{$prefix}transform-origin: top center
 
 figure
-    margin: 0 0 12px
+    position: relative
+
+    figcaption
+        display: block
+        position: absolute
+        left: 0
+        right: 0
+        bottom: 0
+        padding: 4px 10px 6px
+        background: rgba(255, 255, 255, .3)
 
 h1
     color: $c-header
-    font: 36px/36px georgia, sans-serif
+    font: 30px/30px $font-header
     margin: 0 0 8px
 
     time
