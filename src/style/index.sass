@@ -38,8 +38,43 @@ body
     width: 400px
     background-color: #fff
     padding: 15px
+
     @each $prefix in $prefixes
         #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.25)
+
+    h1
+        position: relative
+        color: $c-header
+        font: 30px/30px $font-header
+        margin: 0
+        height: 40px
+
+        time
+            float: right
+
+    &.cut
+        @extend .card
+        background: transparent
+
+        img
+            visibility: hidden
+
+        canvas
+            display: block
+            position: absolute
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+
+        h1
+            color: rgba(0, 0, 0, 0)
+
+        @each $prefix in $prefixes-selection
+            & > #{$prefix}
+                background: rgba(0, 0, 0, 0)
+                color: #fff
+                text-shadow: 1px -1px $c-header, 1px 1px $c-header, -1px 1px $c-header, -1px -1px $c-header
 
 .me
     float: left
@@ -80,31 +115,6 @@ figure
         left: 0
         right: 0
         bottom: 0
-        padding: 4px 10px 6px
-        background: rgba(255, 255, 255, .3)
-
-h1
-    color: $c-header
-    font: 30px/30px $font-header
-    margin: 0 0 8px
-
-    time
-        color: $c-header
-        float: right
-//
-//.overlay
-//    color: rgba(0, 0, 0, 0)
-//    position: absolute
-//    top: 0
-//    left: 10px
-//
-//@each $prefix in $prefixes-selection
-//    .overlay#{$prefix}
-//        background: rgba(0, 0, 0, 0)
-//        color: #fff
-//        text-shadow: 1px -1px $c-header, 2px 1px $c-header, -1px 1px $c-header, -1px -1px $c-header
-//
-//canvas
-//    position: absolute
-//    user-select: none
-//    -moz-user-select: none
+        background: rgba(0, 0, 0, .3)
+        color: #fff
+        padding: 8px 10px 6px

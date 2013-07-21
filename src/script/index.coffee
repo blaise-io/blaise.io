@@ -26,40 +26,66 @@ dom =
 
 
 class CanvasCutout
-    constructor: (@elements) ->
-        canvas = document.querySelector('canvas')
-        context = canvas.getContext('2d')
+    constructor: (@cards) ->
+        @bindLoadEvent(card) for card in cards
 
+    bindLoadEvent: (card) ->
+        img = card.querySelector('img')
+        if (img.complete)
+            @addCanvasToCard(card, img)
+        else
+            img.onload = => @addCanvasToCard(card, img)
+
+    addCanvasToCard: (card, img) ->
+        canvas = document.createElement('canvas')
+        canvas.width = card.offsetWidth
+        canvas.height = card.offsetHeight
+
+        context = canvas.getContext('2d')
         context.fillStyle = '#fff'
         context.fillRect(0, 0, canvas.width, canvas.height)
 
+        h1 = card.querySelector('h1')
+
+        context.drawImage(img, 15, h1.offsetHeight + 15)
+
+        card.insertBefore(canvas, card.childNodes[0])
+        dom.addClass(card, 'cut')
+
+        style = window.getComputedStyle(h1, null)
+        family = style.getPropertyValue('font-family')
+        size = style.getPropertyValue('font-size')
+        lh = style.getPropertyValue('line-height')
+
         context.globalCompositeOperation = 'destination-out'
-        context.font = 'normal 120px georgia, sans-serif'
-        context.fillStyle = '#fff'
-        context.fillText('Blaise Kal', 10, 120)
+        context.font = "#{size} #{family}"
+        context.fillText(h1.childNodes[0].nodeValue, 15, 11 + parseInt(lh, 10))
+
+        time = h1.querySelector('time')
+        if time
+            context.textAlign = 'right'
+            context.fillText(time.innerHTML, canvas.width - 15, 11 + parseInt(lh, 10))
 
 
 class CardScroll
-
     MAX_SKEW: 90
-    VIEWPORT: 0
+    EXTEND_V: 0
 
     constructor: (@container) ->
         @cards = @container.querySelectorAll('.card')
-        @container.onscroll = window.onresize = =>
+        @container.onscroll = window.onresize = window.onload = =>
             @updateAll()
         @updateAll();
 
     updateAll: ->
-        v1 = @container.scrollTop - @VIEWPORT
-        v2 = v1 + window.innerHeight + @VIEWPORT + @VIEWPORT
+        v1 = @container.scrollTop - @EXTEND_V
+        v2 = v1 + window.innerHeight + @EXTEND_V + @EXTEND_V
         @updateCard(card, v1, v2) for card in @cards
 
     updateCard: (card, v1, v2) ->
         ch = card.offsetHeight
         c1 = card.offsetTop
         c2 = c1 + ch
-
         frac = 0
 
         if v1 > c1
@@ -81,4 +107,5 @@ class CardScroll
         card.style.opacity = 1 - Math.abs(frac)
 
 
-cards = new CardScroll document.querySelector '.cards'
+new CanvasCutout document.querySelectorAll '.card'
+new CardScroll document.querySelector '.cards'
