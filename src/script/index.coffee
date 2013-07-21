@@ -17,19 +17,46 @@ dom =
         dom.setClassNameArr(element, ret)
 
     transform: (element, transform) ->
-        prefixes = ['transform', 'webkitTransform', 'mozTransform', 'msTransform']
+        prefixes = ['transform', 'webkitTransform', 'mozTransform',
+                    'msTransform']
         if not dom._transform
             for prefix in prefixes
                 if typeof element.style[prefix] isnt 'undefined'
                     dom._transform = prefix
         element.style[dom._transform] = transform
 
+    webFontLoaded: (font, callback) ->
+        dummy = document.createElement('span')
+        dummy.innerHTML = '!@#$%'
+        dummy.style.font = '300px serif'
+        document.body.appendChild(dummy)
+        width = dummy.offsetWidth
+        dummy.style.font = "300px #{font}, serif"
+        if width isnt dummy.offsetWidth
+            callback()
+        else
+            retry = => dom.webFontLoaded(font, callback)
+            window.setTimeout(retry, 50)
+        dummy.parentNode.removeChild(dummy)
+
 
 class CanvasCutout
     constructor: (@cards) ->
-        @bindLoadEvent(card) for card in cards
+        @font = @getFontProperties()
+        dom.webFontLoaded(@font.family.split(',')[0], => @bindLoadAll())
 
-    bindLoadEvent: (card) ->
+    getFontProperties: ->
+        h1 = document.querySelector('h1')
+        style = window.getComputedStyle(h1, null)
+        font =
+            family    : style.getPropertyValue('font-family')
+            size      : style.getPropertyValue('font-size')
+            lineHeight: style.getPropertyValue('line-height')
+
+    bindLoadAll: ->
+        @bindLoadImage(card) for card in @cards
+
+    bindLoadImage: (card) ->
         img = card.querySelector('img')
         if (img.complete)
             @addCanvasToCard(card, img)
@@ -41,30 +68,34 @@ class CanvasCutout
         canvas.width = card.offsetWidth
         canvas.height = card.offsetHeight
 
-        context = canvas.getContext('2d')
-        context.fillStyle = '#fff'
-        context.fillRect(0, 0, canvas.width, canvas.height)
-
         h1 = card.querySelector('h1')
 
-        context.drawImage(img, 15, h1.offsetHeight + 15)
+        context = canvas.getContext('2d')
 
-        card.insertBefore(canvas, card.childNodes[0])
-        dom.addClass(card, 'cut')
-
-        style = window.getComputedStyle(h1, null)
-        family = style.getPropertyValue('font-family')
-        size = style.getPropertyValue('font-size')
-        lh = style.getPropertyValue('line-height')
-
-        context.globalCompositeOperation = 'destination-out'
-        context.font = "#{size} #{family}"
-        context.fillText(h1.childNodes[0].nodeValue, 15, 11 + parseInt(lh, 10))
+        context.font = "#{@font.size} #{@font.family}"
+        context.fillStyle = '#000'
+        context.fillText(
+            h1.childNodes[0].nodeValue, 15,
+            11 + parseInt(@font.lineHeight, 10)
+        )
 
         time = h1.querySelector('time')
         if time
             context.textAlign = 'right'
-            context.fillText(time.innerHTML, canvas.width - 15, 11 + parseInt(lh, 10))
+            context.fillText(
+                time.innerHTML, canvas.width - 15,
+                11 + parseInt(@font.lineHeight, 10)
+            )
+
+        context.fillStyle = '#fff'
+        context.globalCompositeOperation = 'xor'
+        context.fillRect(0, 0, canvas.width, canvas.height)
+
+        context.globalCompositeOperation = 'source-atop'
+        context.drawImage(img, 15, h1.offsetHeight + 15)
+
+        card.insertBefore(canvas, card.childNodes[0])
+        dom.addClass(card, 'cut')
 
 
 class CardScroll

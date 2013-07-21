@@ -6,6 +6,7 @@
 Thumbs.db
 desktop.ini
 
-# Generate yourself
+# CoffeeScript/Sass generated files
 *.js
 *.css
+*.map
