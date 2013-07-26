@@ -1,7 +1,7 @@
-@import animations
 @import variables
 @import mixins
 @import font
+@import background
 
 html *
     margin: 0
@@ -15,34 +15,25 @@ img
     display: block
 
 body
-    background: #e3e
-    font: 14px/16px $font-body
+    background: $color-1
+    font: 13px/16px $font-body
     color: $c-text
     box-shadow: 0 0 20px rgba(0, 0, 0, .1) inset
 
-.bg
-    @each $prefix in $prefixes
-        background-image: #{$prefix}linear-gradient(26.3deg, #e3e, #0ae, #e3e, #0ae, #e3e, #0ae, #e3e)
-        #{$prefix}animation: scroll 30s linear infinite
-    background-repeat: repeat
-    background-size: 300em 300em
-    background-position: 80em 0
-    position: absolute
-    top: 0
-    left: -300em
-    right: 0
-    bottom: 0
+    a
+        color: $c-text
 
 .card
     position: relative
     width: 400px
     background-color: #fff
-    padding: 15px
+    padding: 13px 15px
 
     @each $prefix in $prefixes
         #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.25)
 
     h1
+        text-transform: uppercase
         position: relative
         color: $c-header
         font: 30px/30px $font-header
@@ -79,6 +70,7 @@ body
 .me
     float: left
     margin: 30px 0 0 30px
+    z-index: 1
 
 .cards
     position: absolute
@@ -115,10 +107,6 @@ figure
 
     figcaption
         display: block
-        position: absolute
-        left: 0
-        right: 0
-        bottom: 0
-        background: rgba(0, 0, 0, .3)
-        color: #fff
-        padding: 8px 10px 6px
+        margin: 15px 0 0
+        //@each $prefix in $prefixes
+        //    background-image: #{$prefix}linear-gradient(bottom, rgba(0,0,0,.7), rgba(0,0,0,.3), rgba(0,0,0,0))

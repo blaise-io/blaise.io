@@ -75,8 +75,8 @@ class CanvasCutout
         context.font = "#{@font.size} #{@font.family}"
         context.fillStyle = '#000'
         context.fillText(
-            h1.childNodes[0].nodeValue, 15,
-            11 + parseInt(@font.lineHeight, 10)
+            h1.childNodes[0].nodeValue.toUpperCase(), 15,
+            9 + parseInt(@font.lineHeight, 10)
         )
 
         time = h1.querySelector('time')
@@ -84,7 +84,7 @@ class CanvasCutout
             context.textAlign = 'right'
             context.fillText(
                 time.innerHTML, canvas.width - 15,
-                11 + parseInt(@font.lineHeight, 10)
+                9 + parseInt(@font.lineHeight, 10)
             )
 
         context.fillStyle = '#fff'
@@ -92,7 +92,7 @@ class CanvasCutout
         context.fillRect(0, 0, canvas.width, canvas.height)
 
         context.globalCompositeOperation = 'source-atop'
-        context.drawImage(img, 15, h1.offsetHeight + 15)
+        context.drawImage(img, 15, h1.offsetHeight + 15, img.getAttribute('width'), img.getAttribute('height'))
 
         card.insertBefore(canvas, card.childNodes[0])
         dom.addClass(card, 'cut')
@@ -138,5 +138,5 @@ class CardScroll
         card.style.opacity = 1 - Math.abs(frac)
 
 
-new CanvasCutout document.querySelectorAll '.card'
-new CardScroll document.querySelector '.cards'
+new CanvasCutout document.querySelectorAll('.card')
+new CardScroll document.querySelector('.cards')
