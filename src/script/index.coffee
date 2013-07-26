@@ -92,7 +92,8 @@ class CanvasCutout
         context.fillRect(0, 0, canvas.width, canvas.height)
 
         context.globalCompositeOperation = 'source-atop'
-        context.drawImage(img, 15, h1.offsetHeight + 15, img.getAttribute('width'), img.getAttribute('height'))
+        context.drawImage(img, 15, h1.offsetHeight + 13,
+            img.getAttribute('width'), img.getAttribute('height'))
 
         card.insertBefore(canvas, card.childNodes[0])
         dom.addClass(card, 'cut')
@@ -104,6 +105,7 @@ class CardScroll
 
     constructor: (@container) ->
         @cards = @container.querySelectorAll('.card')
+        dom.addClass(document.documentElement, 'fancy')
         @container.onscroll = window.onresize = window.onload = =>
             @updateAll()
         @updateAll();
@@ -138,5 +140,7 @@ class CardScroll
         card.style.opacity = 1 - Math.abs(frac)
 
 
-new CanvasCutout document.querySelectorAll('.card')
-new CardScroll document.querySelector('.cards')
+# Exclude slowpokes from all fun
+if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
+    new CanvasCutout document.querySelectorAll('.card')
+    new CardScroll document.querySelector('.cards')
