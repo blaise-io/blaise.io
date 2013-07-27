@@ -35,7 +35,8 @@ dom =
         if width isnt dummy.offsetWidth
             callback()
         else
-            retry = => dom.webFontLoaded(font, callback)
+            retry = =>
+                dom.webFontLoaded(font, callback)
             window.setTimeout(retry, 50)
         dummy.parentNode.removeChild(dummy)
 
@@ -43,7 +44,8 @@ dom =
 class CanvasCutout
     constructor: (@cards) ->
         @font = @getFontProperties()
-        dom.webFontLoaded(@font.family.split(',')[0], => @bindLoadAll())
+        dom.webFontLoaded(@font.family.split(',')[0], =>
+            @bindLoadAll())
 
     getFontProperties: ->
         h1 = document.querySelector('h1')
@@ -59,44 +61,87 @@ class CanvasCutout
     bindLoadImage: (card) ->
         img = card.querySelector('img')
         if (img.complete)
-            @addCanvasToCard(card, img)
+            new CardCanvas(card, img, @font)
         else
-            img.onload = => @addCanvasToCard(card, img)
+            img.onload = =>
+                new CardCanvas(card, img, @font)
 
-    addCanvasToCard: (card, img) ->
+
+class CardCanvas
+    constructor: (@card, @img, @font) ->
+        h1 = @card.querySelector('h1')
+        time = card.querySelector('time')
+
+        @width = @card.offsetWidth
+        @height = @card.offsetHeight
+
+        @padding = 15
+        @textY = 9 + parseFloat(@font.lineHeight)
+
+        @imgY = h1.offsetHeight + @padding - 2
+        @imgW = parseInt(@img.getAttribute('width'), 10)
+        @imgH = parseInt(@img.getAttribute('height'), 10)
+
+        @title = h1.childNodes[0].nodeValue.toUpperCase()
+        @time = time.childNodes[0].nodeValue if time
+
+        @addCanvasToCard()
+
+    addCanvasToCard: ->
         canvas = document.createElement('canvas')
-        canvas.width = card.offsetWidth
-        canvas.height = card.offsetHeight
+        canvas.width = @width
+        canvas.height = @height
 
-        h1 = card.querySelector('h1')
+        @context = canvas.getContext('2d')
 
-        context = canvas.getContext('2d')
+        @paintCanvas(null)
+        @bindEvents()
 
-        context.font = "#{@font.size} #{@font.family}"
-        context.fillStyle = '#000'
-        context.fillText(
-            h1.childNodes[0].nodeValue.toUpperCase(), 15,
-            9 + parseInt(@font.lineHeight, 10)
-        )
+        @card.insertBefore(canvas, @card.childNodes[0])
+        dom.addClass(@card, 'cut')
 
-        time = h1.querySelector('time')
-        if time
-            context.textAlign = 'right'
-            context.fillText(
-                time.innerHTML, canvas.width - 15,
-                9 + parseInt(@font.lineHeight, 10)
-            )
+    paintCanvas: (hover) ->
+        if hover?
+            @context.globalCompositeOperation = 'source-over'
+            @context.clearRect(0, 0, @width, @height)
+        if hover
+            @paintAction()
 
-        context.fillStyle = '#fff'
-        context.globalCompositeOperation = 'xor'
-        context.fillRect(0, 0, canvas.width, canvas.height)
+        @paintTitle()
+        @paintTime()
+        @paintBackground()
+        @paintImage()
 
-        context.globalCompositeOperation = 'source-atop'
-        context.drawImage(img, 15, h1.offsetHeight + 13,
-            img.getAttribute('width'), img.getAttribute('height'))
+    bindEvents: ->
+        @img.onmouseenter = =>
+            @paintCanvas(true)
+        @img.onmouseout = =>
+            @paintCanvas(false)
 
-        card.insertBefore(canvas, card.childNodes[0])
-        dom.addClass(card, 'cut')
+    paintTitle: ->
+        @context.textAlign = 'left'
+        @context.font = "#{@font.size} #{@font.family}"
+        @context.fillText(@title, @padding, @textY)
+
+    paintAction: ->
+        if @time
+            @context.textAlign = 'right'
+            @context.font = "100px #{@font.family}"
+            @context.fillText('◹', @width - @padding * 2, @imgY + 75)
+
+    paintTime: ->
+        if @time
+            @context.textAlign = 'right'
+            @context.fillText(@time, @width - @padding, @textY)
+
+    paintBackground: ->
+        @context.fillStyle = '#fff'
+        @context.globalCompositeOperation = 'xor'
+        @context.fillRect(0, 0, @width, @height)
+
+    paintImage: ->
+        @context.globalCompositeOperation = 'source-atop'
+        @context.drawImage(@img, @padding, @imgY, @imgW, @imgH)
 
 
 class CardScroll
@@ -142,5 +187,5 @@ class CardScroll
 
 # Exclude slowpokes from all fun
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
-    new CanvasCutout document.querySelectorAll('.card')
-    new CardScroll document.querySelector('.cards')
+    new CanvasCutout(document.querySelectorAll('.card'))
+    new CardScroll(document.querySelector('.cards'))

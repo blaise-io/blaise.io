@@ -52,7 +52,7 @@ body
         background: transparent
 
         img
-            visibility: hidden
+            opacity: 0
 
         canvas
             display: block
@@ -95,6 +95,9 @@ body
         &:last-child
             margin-bottom: 30px
 
+        img
+            cursor: pointer
+
 .top
     @each $prefix in $prefixes
         #{$prefix}perspective-origin: bottom center
@@ -110,6 +113,4 @@ figure
 
     figcaption
         display: block
-        margin: 15px 0 0
-        //@each $prefix in $prefixes
-        //    background-image: #{$prefix}linear-gradient(bottom, rgba(0,0,0,.7), rgba(0,0,0,.3), rgba(0,0,0,0))
+        margin: 12px 0 0
