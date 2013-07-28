@@ -70,7 +70,11 @@ class CanvasCutout
 class CardCanvas
     constructor: (@card, @img, @font) ->
         h1 = @card.querySelector('h1')
-        time = card.querySelector('time')
+        time = h1.querySelector('time')
+
+        @hover =
+            img: false
+            link: false
 
         @width = @card.offsetWidth
         @height = @card.offsetHeight
@@ -82,8 +86,15 @@ class CardCanvas
         @imgW = parseInt(@img.getAttribute('width'), 10)
         @imgH = parseInt(@img.getAttribute('height'), 10)
 
-        @title = h1.childNodes[0].nodeValue.toUpperCase()
-        @time = time.childNodes[0].nodeValue if time
+        @link = h1.querySelector('a')
+        if @link
+            @linkW = @link.offsetWidth
+            @title = @link.textContent
+        else
+            @title = h1.textContent
+
+        @title = @title.toUpperCase().trim()
+        @time = time.innerHTML.trim() if time
 
         @addCanvasToCard()
 
@@ -94,45 +105,59 @@ class CardCanvas
 
         @context = canvas.getContext('2d')
 
-        @paintCanvas(null)
-        @bindEvents()
+        @paintCanvas()
+        @bindEvents() if @link
 
         @card.insertBefore(canvas, @card.childNodes[0])
         dom.addClass(@card, 'cut')
 
-    paintCanvas: (hover) ->
-        if hover?
-            @context.globalCompositeOperation = 'source-over'
-            @context.clearRect(0, 0, @width, @height)
-        if hover
-            @paintAction()
+    paintCanvas: () ->
+        @context.clearRect(0, 0, @width, @height)
+        @context.globalCompositeOperation = 'source-over'
 
         @paintTitle()
-        @paintTime()
+        @paintTime() if @time
+        @paintImgHover() if @hover.img
+        @paintLinkHover() if @hover.link
         @paintBackground()
         @paintImage()
 
     bindEvents: ->
         @img.onmouseenter = =>
-            @paintCanvas(true)
+            @hover.img = true
+            @paintCanvas()
         @img.onmouseout = =>
-            @paintCanvas(false)
+            @hover.img = false
+            @paintCanvas()
+        if @link
+            @link.onmouseenter = =>
+                @hover.link = true
+                @paintCanvas()
+            @link.onmouseout = =>
+                @hover.link = false
+                @paintCanvas()
 
     paintTitle: ->
         @context.textAlign = 'left'
         @context.font = "#{@font.size} #{@font.family}"
         @context.fillText(@title, @padding, @textY)
 
-    paintAction: ->
-        if @time
-            @context.textAlign = 'right'
-            @context.font = "100px #{@font.family}"
-            @context.fillText('◹', @width - @padding * 2, @imgY + 75)
+    paintLinkHover: ->
+        @context.fillRect(@padding, @textY + 2, @linkW, 1)
+
+    paintImgHover: ->
+        w = 4
+        @context.globalAlpha = 0.4
+        # T R B L
+        @context.fillRect(@padding, @imgY, @imgW - w, w)
+        @context.fillRect(@padding + @imgW - w, @imgY, w, @imgH - w)
+        @context.fillRect(@padding, @imgY + @imgH - w, @imgW, w)
+        @context.fillRect(@padding, @imgY + w, w, @imgH - w - w)
+        @context.globalAlpha = 1
 
     paintTime: ->
-        if @time
-            @context.textAlign = 'right'
-            @context.fillText(@time, @width - @padding, @textY)
+        @context.textAlign = 'right'
+        @context.fillText(@time, @width - @padding, @textY)
 
     paintBackground: ->
         @context.fillStyle = '#fff'
@@ -161,6 +186,7 @@ class CardScroll
         @updateCard(card, v1, v2) for card in @cards
 
     updateCard: (card, v1, v2) ->
+        cw = card.offsetWidth
         ch = card.offsetHeight
         c1 = card.offsetTop
         c2 = c1 + ch
@@ -177,10 +203,11 @@ class CardScroll
             if v2 > c1
                 frac = (v2 - c2) / ch
 
-        @applyStyle(card, frac)
+        @applyStyle(card, cw, frac)
 
-    applyStyle: (card, frac) ->
-        transform = "perspective(400px) rotateX(#{ frac * @MAX_SKEW }deg)"
+    applyStyle: (card, cw, frac) ->
+        fracEase = Math.pow(frac, 3)
+        transform = "perspective(#{ cw }px) rotateX(#{ fracEase * @MAX_SKEW }deg)"
         dom.transform(card, transform)
         card.style.opacity = 1 - Math.abs(frac)
 

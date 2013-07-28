@@ -1,55 +1,70 @@
-@import variables
-@import font
-@import background
-
-*
-    margin: 0
-    padding: 0
+@import "includes/_variables"
+@import "includes/_reset"
+@import "includes/_font"
+@import "includes/_background"
 
 body
+    background: $c-gradient1
+    font: 13px/16px $font-body
+    color: $c-text
+    padding: $px-padding-big
     height: 100%
 
     .fancy &
         overflow: hidden
         padding: 0
 
-img
-    display: block
+@each $prefix in $prefixes-selection
+    #{$prefix}
+        color: $c-card
+        background: $c-transparent
+        text-shadow: 0 -1px $c-header, 0 1px $c-header, -1px 0 $c-header, 1px 0 $c-header
 
-body
-    background: $color-1
-    font: 13px/16px $font-body
+a
     color: $c-text
-    padding: 30px
+
+h1
+    color: $c-header
+    text-transform: uppercase
+    position: relative
+    font: #{$fs-header}/#{$fs-header} $font-header
+    margin: 0
+    height: 40px
+
+    *color: $c-header
+
+    .cut &, .cut & *
+        color: $c-transparent
 
     a
-        color: $c-text
+        text-decoration: none
+        &:hover
+            text-decoration: underline
+
+    time
+        float: right
+
+figure
+    position: relative
+
+    figcaption
+        display: block
+        margin: #{$n-padding-med - 3}px 0 0
 
 .card
-    width: 400px
+    width: $px-card
     position: relative
     z-index: 1
-    background-color: #fff
-    padding: 13px 15px
-    margin: 0 1px 1px 0
+    background-color: $c-card
+    padding: #{$n-padding-med - 2}px $px-padding-med
+    margin: 0 $px-gutter $px-gutter 0
 
     @each $prefix in $prefixes
         #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.25)
 
-    h1
-        text-transform: uppercase
-        position: relative
-        color: $c-header
-        font: 30px/30px $font-header
-        margin: 0
-        height: 40px
-
-        time
-            float: right
-
     &.cut
-        @extend .card
         background: transparent
+        transition: transform 0ms ease
 
         img
             opacity: 0
@@ -61,15 +76,6 @@ body
             left: 0
             right: 0
             bottom: 0
-
-        h1
-            color: rgba(0, 0, 0, 0)
-
-        @each $prefix in $prefixes-selection
-            & > #{$prefix}
-                background: rgba(0, 0, 0, 0)
-                color: #fff
-                text-shadow: 1px -1px $c-header, 1px 1px $c-header, -1px 1px $c-header, -1px -1px $c-header
 
 .me
     position: relative
@@ -86,31 +92,23 @@ body
         @extend %cover
         position: absolute
         overflow: auto
-        padding: 30px 0 0
-        margin: 0 0 0 461px
+        padding: $px-padding-big 0 0
+        transform-style: preserve-3d
+        margin: 0 0 0 #{$n-padding-big * 2 + $n-card + $n-gutter}px
 
     .card
-        transition: transform 150ms ease
-
-        &:last-child
-            margin-bottom: 30px
-
         img
             cursor: pointer
 
-.top
-    @each $prefix in $prefixes
-        #{$prefix}perspective-origin: bottom center
-        #{$prefix}transform-origin: bottom center
+        &:last-child
+            margin-bottom: $px-padding-big
 
-.bottom
-    @each $prefix in $prefixes
-        #{$prefix}perspective-origin: top center
-        #{$prefix}transform-origin: top center
+        &.top
+            @each $prefix in $prefixes
+                #{$prefix}perspective-origin: bottom center
+                #{$prefix}transform-origin: bottom center
 
-figure
-    position: relative
-
-    figcaption
-        display: block
-        margin: 12px 0 0
+        &.bottom
+            @each $prefix in $prefixes
+                #{$prefix}perspective-origin: top center
+                #{$prefix}transform-origin: top center

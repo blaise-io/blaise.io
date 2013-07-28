@@ -1,11 +1,11 @@
 # blaise.io
 
-Homepage of Blaise Kal.
+Homepage of me. I am Blaise Kal.
 
 ## To do
 
+1. Social icons
+1. Orbs
 1. Selectable color theme and remember setting
 1. Ensure graceful degradation in shitty browsers
 1. Favicon
-1. Clean up SASS/Coffee
-1. Allow selecting time

@@ -1,10 +1,7 @@
-@import variables
+@import "variables"
 
 $bg-width: 2000px
 $bg-height: 3000px
-
-$color-1: #e2a
-$color-2: #0bf
 
 %cover
     position: fixed
@@ -16,7 +13,7 @@ $color-2: #0bf
 .bg
     @extend %cover
     @each $prefix in $prefixes
-        background-image: #{$prefix}linear-gradient(45deg, $color-1, $color-2, $color-1, $color-2, $color-1, $color-2)
+        background-image: #{$prefix}linear-gradient(45deg, $c-gradient1, $c-gradient2, $c-gradient1, $c-gradient2, $c-gradient1, $c-gradient2)
         #{$prefix}transform: translate3d(0, 0, 0)
     background-repeat: repeat
     background-size: $bg-width $bg-height
