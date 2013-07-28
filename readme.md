@@ -1,4 +1,4 @@
-# blaise.io
+# [blaise.io](http://blaise.io)
 
 Homepage of me. I am Blaise Kal.
 
