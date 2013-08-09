@@ -5,7 +5,7 @@
 
 body
     background: $c-gradient1
-    font: 13px/16px $font-body
+    font: 12px/16px $font-body
     color: $c-text
     padding: $px-padding-big
     height: 100%
@@ -50,6 +50,8 @@ figure
     figcaption
         display: block
         margin: #{$n-padding-med - 3}px 0 0
+        position: relative
+        z-index: 3
 
 .card
     width: $px-card
@@ -60,22 +62,18 @@ figure
     margin: 0 $px-gutter $px-gutter 0
 
     @each $prefix in $prefixes
-        #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.25)
+        #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.3)
 
     &.cut
         background: transparent
-        transition: transform 50ms ease
+        transition: transform 70ms ease-out
 
         img
             opacity: 0
 
         canvas
-            display: block
+            @extend %cover
             position: absolute
-            top: 0
-            left: 0
-            right: 0
-            bottom: 0
 
 .me
     position: relative
@@ -92,9 +90,10 @@ figure
         @extend %cover
         position: absolute
         overflow: auto
-        padding: $px-padding-big 0 0
-        transform-style: preserve-3d
-        margin: 0 0 0 #{$n-padding-big * 2 + $n-card + $n-gutter}px
+        padding: $px-padding-big 0 0 $px-padding-big
+        @each $prefix in $prefixes
+            #{$prefix}transform-style: preserve-3d
+        margin: 0 0 0 #{$n-padding-big + $n-card + $n-gutter}px
 
     .card
         img

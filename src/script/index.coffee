@@ -73,7 +73,7 @@ class CardCanvas
         time = h1.querySelector('time')
 
         @hover =
-            img: false
+            img : false
             link: false
 
         @width = @card.offsetWidth
@@ -146,14 +146,14 @@ class CardCanvas
         @context.fillRect(@padding, @textY + 2, @linkW, 1)
 
     paintImgHover: ->
-        w = 4
-        @context.globalAlpha = 0.4
+        s = 1
+        o = 2
+
         # T R B L
-        @context.fillRect(@padding, @imgY, @imgW - w, w)
-        @context.fillRect(@padding + @imgW - w, @imgY, w, @imgH - w)
-        @context.fillRect(@padding, @imgY + @imgH - w, @imgW, w)
-        @context.fillRect(@padding, @imgY + w, w, @imgH - w - w)
-        @context.globalAlpha = 1
+        @context.fillRect(@padding + o, @imgY + o, @imgW - o - o, s)
+        @context.fillRect(@padding + @imgW - s - o, @imgY + o, s, @imgH - o - o)
+        @context.fillRect(@padding + o, @imgY + @imgH - o - s, @imgW - o - o, s)
+        @context.fillRect(@padding + o, @imgY + o, s, @imgH - o - o)
 
     paintTime: ->
         @context.textAlign = 'right'
@@ -170,9 +170,6 @@ class CardCanvas
 
 
 class CardScroll
-    MAX_SKEW: 90
-    EXTEND_V: 0
-
     constructor: (@container) ->
         @cards = @container.querySelectorAll('.card')
         dom.addClass(document.documentElement, 'fancy')
@@ -181,8 +178,8 @@ class CardScroll
         @updateAll();
 
     updateAll: ->
-        v1 = @container.scrollTop - @EXTEND_V
-        v2 = v1 + window.innerHeight + @EXTEND_V + @EXTEND_V
+        v1 = @container.scrollTop
+        v2 = v1 + window.innerHeight
         @updateCard(card, v1, v2) for card in @cards
 
     updateCard: (card, v1, v2) ->
@@ -206,13 +203,12 @@ class CardScroll
         @applyStyle(card, cw, frac)
 
     applyStyle: (card, cw, frac) ->
-        fracEase = Math.pow(frac, 3)
-        transform = "perspective(#{ cw }px) rotateX(#{ fracEase * @MAX_SKEW }deg)"
+        transform = "perspective(#{ cw }px) rotateX(#{ frac * Math.PI / 2 }rad)"
         dom.transform(card, transform)
         card.style.opacity = 1 - Math.abs(frac)
 
 
-# Exclude slowpokes from all fun
+# Initialize; exclude slowpokes
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
     new CanvasCutout(document.querySelectorAll('.card'))
     new CardScroll(document.querySelector('.cards'))
