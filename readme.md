@@ -1,8 +1,4 @@
-# blaise.io
-
-Homepage of me. I am Blaise Kal.
-
-## To do
+# To do
 
 1. Social icons
 1. Orbs
