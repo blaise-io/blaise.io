@@ -1,0 +1,61 @@
+article
+    @extend %rounded-edge
+    width: $px-card
+    position: relative
+    z-index: 1
+    background-color: $c-card
+    padding: #{$px-padding-M - 2} $px-padding-M
+    margin: 0 $px-gutter $px-gutter 0
+
+    &.top
+        @each $prefix in $prefixes
+            #{$prefix}perspective-origin: bottom center
+            #{$prefix}transform-origin: bottom center
+
+    &.bottom
+        @each $prefix in $prefixes
+            #{$prefix}perspective-origin: top center
+            #{$prefix}transform-origin: top center
+
+    &.cut
+        background: transparent
+        transition: transform 70ms ease-out
+
+        img
+            opacity: 0
+
+        canvas
+            @extend %cover
+            position: absolute
+
+
+h1
+    color: $c-header
+    text-transform: uppercase
+    position: relative
+    font: #{$fs-header}/#{$fs-header} $font-header
+    margin: 0
+    height: 40px
+
+    *
+        color: $c-header
+
+    .cut &, .cut & *
+        color: $c-transparent
+
+    a
+        text-decoration: none
+        &:hover
+            text-decoration: underline
+
+    time
+        float: right
+
+figure
+    position: relative
+
+    figcaption
+        display: block
+        margin: #{$px-padding-M - 3} 0 0
+        position: relative
+        z-index: 3

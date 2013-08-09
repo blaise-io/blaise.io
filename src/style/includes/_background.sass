@@ -1,88 +1,75 @@
-@import "variables"
-
 body
     .ENHANCED &
         overflow: hidden
         padding: 0
 
     &.summer
-        background: $c-summer-1
+        background-color: $c-summer-1
 
     &.spring
-        background: $c-spring-1
+        background-color: $c-spring-1
 
     &.autumn
-        background: $c-autumn-1
+        background-color: $c-autumn-1
 
     &.winter
-        background: $c-winter-1
+        background-color: $c-winter-1
 
-
-%cover
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-
-%glow
-    overflow: hidden
-    @each $prefix in $prefixes
-        #{$prefix}border-radius: 2px
-        #{$prefix}box-shadow: 0 0 1px rgba(0,0,0, 0.1), 0 0 10px rgba(255, 255, 255, 0.3)
 
 .bg
     @extend %cover
     @each $prefix in $prefixes
         #{$prefix}transform: translate3d(0, 0, 0)
-
     background-repeat: repeat
-    background-size: $bg-width $bg-height
-    left: -$bg-width * 2
+    background-size: 500% 500%
 
     .ENHANCED &
+        background-size: $bg-width $bg-height
+        left: #{$bg-width * -2}
         @each $prefix in $prefixes
-            #{$prefix}animation: scroll 30s linear infinite
+            #{$prefix}animation: bganim 30s linear infinite
 
     .spring &
         @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(45deg, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2)
+            background-image: #{$prefix}linear-gradient(225deg, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2)
 
     .summer &
         @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(45deg, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2)
+            background-image: #{$prefix}linear-gradient(225deg, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2)
 
     .autumn &
         @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(45deg, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2)
+            background-image: #{$prefix}linear-gradient(225deg, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2)
 
     .winter &
         @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(45deg, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2)
+            background-image: #{$prefix}linear-gradient(225deg, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2)
 
 .vignet
     @extend %cover
-    box-shadow: 0 0 20px rgba(0, 0, 0, .1) inset
+    @each $prefix in $prefixes
+        #{$prefix}box-shadow: 0 0 10px rgba(0, 0, 0, .25) inset, 0 0 2px rgba(0, 0, 0, .25) inset
 
-@-webkit-keyframes scroll
+
+@-webkit-keyframes bganim
     0%
         -webkit-transform: translate3d($bg-width, 0, 0)
     100%
         -webkit-transform: translate3d(0, 0, 0)
 
-@-moz-keyframes scroll
+@-moz-keyframes bganim
     0%
         -moz-transform: translate3d($bg-width, 0, 0)
     100%
         -moz-transform: translate3d(0, 0, 0)
 
-@-ms-keyframes scroll
+@-ms-keyframes bganim
     0%
         -ms-transform: translate3d($bg-width, 0, 0)
     100%
         -ms-transform: translate3d(0, 0, 0)
 
-@keyframes scroll
+@keyframes bganim
     0%
         transform: translate3d($bg-width, 0, 0)
     100%

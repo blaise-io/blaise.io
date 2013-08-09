@@ -1,0 +1,25 @@
+.me
+    position: relative
+    float: left
+
+    .ENHANCED &
+        margin: $px-padding-L $px-gutter $px-gutter $px-padding-L
+
+.cards
+    float: left
+
+    .ENHANCED &
+        @extend %cover
+        position: absolute
+        overflow: auto
+        padding: $px-padding-L 0 0 $px-padding-L
+        @each $prefix in $prefixes
+            #{$prefix}transform-style: preserve-3d
+        margin: 0 0 0 #{$px-padding-L + $px-card + $px-gutter}
+
+    article
+        img
+            cursor: pointer
+
+        &:last-child
+            margin-bottom: $px-padding-L

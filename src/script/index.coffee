@@ -244,4 +244,4 @@ class ThemeNav
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
     new CardScroll(document.querySelector('.cards'))
     new CanvasCutout(document.querySelectorAll('.card'))
-    new ThemeNav(document.querySelectorAll('nav li'))
+    new ThemeNav(document.querySelectorAll('.themes li'))

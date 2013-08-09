@@ -1,0 +1,50 @@
+@each $prefix in $prefixes-selection
+    #{$prefix}
+        color: $c-card
+        background: $c-transparent
+        text-shadow: 0 -1px $c-header, 0 1px $c-header, -1px 0 $c-header, 1px 0 $c-header
+
+body
+    font: 12px/16px $font-body
+    color: $c-text
+    padding: $px-padding-L
+    height: 100%
+
+nav
+    position: relative
+    z-index: 2
+
+a
+    color: $c-text
+
+%cover
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+
+%rounded-edge
+    overflow: hidden
+    @each $prefix in $prefixes
+        #{$prefix}border-radius: 1px
+        #{$prefix}box-shadow: 0 0 1px rgba(0,0,0, 0.1), 0 0 10px rgba(255, 255, 255, 0.3)
+
+%small-tile
+    @extend %rounded-edge
+    margin: 0 0 $px-gutter $px-gutter
+    position: relative
+    list-style: none
+    border: $px-padding-S solid $c-card
+    width: 40px
+    height: 40px
+    text-indent: 999em
+    overflow: hidden
+
+    @each $prefix in $prefixes
+        #{$prefix}box-sizing: border-box
+
+%selected-theme
+    background-image: none
+    border-width: $px-padding-S
+    cursor: default

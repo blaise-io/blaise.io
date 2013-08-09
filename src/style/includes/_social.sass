@@ -1,0 +1,18 @@
+ul.social
+    width: $px-card
+    font-size: 0
+    text-align: center
+    margin-left: $px-padding-M
+
+    .ENHANCED &
+        clear: left
+        float: left
+        text-align: right
+        margin-left: #{$px-padding-L + $px-padding-M * 2}
+
+    li
+        display: inline-block
+
+        a
+            display: block
+            @extend %small-tile
