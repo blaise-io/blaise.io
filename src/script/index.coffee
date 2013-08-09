@@ -178,7 +178,7 @@ class CardCanvas
 
 class CardScroll
     constructor: (@container) ->
-        @cards = @container.querySelectorAll('.card')
+        @cards = @container.querySelectorAll('article')
         dom.addClass(document.documentElement, 'ENHANCED')
         @container.onscroll = window.onresize = window.onload = =>
             @updateAll()
@@ -243,5 +243,5 @@ class ThemeNav
 # Initialize; exclude slowpokes
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
     new CardScroll(document.querySelector('.cards'))
-    new CanvasCutout(document.querySelectorAll('.card'))
+    new CanvasCutout(document.querySelectorAll('article'))
     new ThemeNav(document.querySelectorAll('.themes li'))
