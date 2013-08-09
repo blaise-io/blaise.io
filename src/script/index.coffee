@@ -25,6 +25,13 @@ dom =
                     dom._transform = prefix
         element.style[dom._transform] = transform
 
+    storage: (key, val) ->
+        if key and localStorage?
+            if val
+                return localStorage.setItem(key, val)
+            else
+                return localStorage.getItem(key)
+
     webFontLoaded: (font, callback) ->
         dummy = document.createElement('span')
         dummy.innerHTML = '!@#$%'
@@ -172,7 +179,7 @@ class CardCanvas
 class CardScroll
     constructor: (@container) ->
         @cards = @container.querySelectorAll('.card')
-        dom.addClass(document.documentElement, 'fancy')
+        dom.addClass(document.documentElement, 'ENHANCED')
         @container.onscroll = window.onresize = window.onload = =>
             @updateAll()
         @updateAll();
@@ -208,7 +215,33 @@ class CardScroll
         card.style.opacity = 1 - Math.abs(frac)
 
 
+class ThemeNav
+    KEY: 'theme'
+
+    constructor: (@themeLis) ->
+        @themes = []
+        @index(li) for li in @themeLis
+        @load(dom.storage(@KEY))
+
+    index: (li) ->
+        theme = li.id
+        @themes.push(theme)
+        li.onclick = =>
+            @select(theme)
+            dom.storage(@KEY, theme)
+
+    load: (theme) ->
+        @select(theme) if theme in @themes
+
+    select: (theme) ->
+        args = @themes.slice()
+        args.unshift(document.body)
+        dom.removeClass.apply(dom, args)
+        dom.addClass(document.body, theme)
+
+
 # Initialize; exclude slowpokes
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
-    new CanvasCutout(document.querySelectorAll('.card'))
     new CardScroll(document.querySelector('.cards'))
+    new CanvasCutout(document.querySelectorAll('.card'))
+    new ThemeNav(document.querySelectorAll('nav li'))

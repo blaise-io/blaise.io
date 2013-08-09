@@ -2,17 +2,14 @@
 @import "includes/_reset"
 @import "includes/_font"
 @import "includes/_background"
+@import "includes/_nav"
 
 body
-    background: $c-gradient1
     font: 12px/16px $font-body
     color: $c-text
     padding: $px-padding-big
     height: 100%
 
-    .fancy &
-        overflow: hidden
-        padding: 0
 
 @each $prefix in $prefixes-selection
     #{$prefix}
@@ -53,7 +50,8 @@ figure
         position: relative
         z-index: 3
 
-.card
+article
+    @extend %glow
     width: $px-card
     position: relative
     z-index: 1
@@ -61,8 +59,15 @@ figure
     padding: #{$n-padding-med - 2}px $px-padding-med
     margin: 0 $px-gutter $px-gutter 0
 
-    @each $prefix in $prefixes
-        #{$prefix}box-shadow: 0 0 10px rgba(255, 255, 255, 0.3)
+    &.top
+        @each $prefix in $prefixes
+            #{$prefix}perspective-origin: bottom center
+            #{$prefix}transform-origin: bottom center
+
+    &.bottom
+        @each $prefix in $prefixes
+            #{$prefix}perspective-origin: top center
+            #{$prefix}transform-origin: top center
 
     &.cut
         background: transparent
@@ -79,14 +84,14 @@ figure
     position: relative
     float: left
 
-    .fancy &
+    .ENHANCED &
         left: 30px
         top: 30px
 
 .cards
     float: left
 
-    .fancy &
+    .ENHANCED &
         @extend %cover
         position: absolute
         overflow: auto
@@ -95,19 +100,9 @@ figure
             #{$prefix}transform-style: preserve-3d
         margin: 0 0 0 #{$n-padding-big + $n-card + $n-gutter}px
 
-    .card
+    article
         img
             cursor: pointer
 
         &:last-child
             margin-bottom: $px-padding-big
-
-        &.top
-            @each $prefix in $prefixes
-                #{$prefix}perspective-origin: bottom center
-                #{$prefix}transform-origin: bottom center
-
-        &.bottom
-            @each $prefix in $prefixes
-                #{$prefix}perspective-origin: top center
-                #{$prefix}transform-origin: top center
