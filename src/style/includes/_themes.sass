@@ -14,26 +14,26 @@ ul.themes
         &:hover
             border-width: #{$px-padding-S - 1}
 
-        &#spring
+        &.spring
             @each $prefix in $prefixes
                 background-image: #{$prefix}linear-gradient(45deg, $c-spring-1, $c-spring-2)
-            .spring &
+            html.spring &
                 @extend %selected-theme
 
-        &#summer
+        &.summer
             @each $prefix in $prefixes
                 background-image: #{$prefix}linear-gradient(45deg, $c-summer-1, $c-summer-2)
-            .summer &
+            html.summer &
                 @extend %selected-theme
 
-        &#autumn
+        &.autumn
             @each $prefix in $prefixes
                 background-image: #{$prefix}linear-gradient(45deg, $c-autumn-1, $c-autumn-2)
-            .autumn &
+            html.autumn &
                 @extend %selected-theme
 
-        &#winter
+        &.winter
             @each $prefix in $prefixes
                 background-image: #{$prefix}linear-gradient(45deg, $c-winter-1, $c-winter-2)
-            .winter &
+            html.winter &
                 @extend %selected-theme

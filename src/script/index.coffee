@@ -1,3 +1,4 @@
+# DOM Utils
 dom =
     getClassNameArr: (element) ->
         element.className.split(/[\s]+/g)
@@ -17,12 +18,11 @@ dom =
         dom.setClassNameArr(element, ret)
 
     transform: (element, transform) ->
-        prefixes = ['transform', 'webkitTransform', 'mozTransform',
-                    'msTransform']
+        pres = ['transform', 'webkitTransform', 'mozTransform', 'msTransform']
         if not dom._transform
-            for prefix in prefixes
-                if typeof element.style[prefix] isnt 'undefined'
-                    dom._transform = prefix
+            for pre in pres
+                if typeof element.style[pre] isnt 'undefined'
+                    dom._transform = pre
         element.style[dom._transform] = transform
 
     storage: (key, val) ->
@@ -40,14 +40,15 @@ dom =
         width = dummy.offsetWidth
         dummy.style.font = "300px #{font}, serif"
         if width isnt dummy.offsetWidth
+            dummy.parentNode.removeChild(dummy)
             callback()
         else
             retry = =>
                 dom.webFontLoaded(font, callback)
             window.setTimeout(retry, 50)
-        dummy.parentNode.removeChild(dummy)
 
 
+# Background seaping through text effect in cards
 class CanvasCutout
     constructor: (@cards) ->
         @font = @getFontProperties()
@@ -74,6 +75,7 @@ class CanvasCutout
                 new CardCanvas(card, img, @font)
 
 
+# Individual card
 class CardCanvas
     constructor: (@card, @img, @font) ->
         h1 = @card.querySelector('h1')
@@ -118,7 +120,7 @@ class CardCanvas
         @card.insertBefore(canvas, @card.childNodes[0])
         dom.addClass(@card, 'cut')
 
-    paintCanvas: () ->
+    paintCanvas: ->
         @context.clearRect(0, 0, @width, @height)
         @context.globalCompositeOperation = 'source-over'
 
@@ -176,6 +178,7 @@ class CardCanvas
         @context.drawImage(@img, @padding, @imgY, @imgW, @imgH)
 
 
+# 3D effect when scrolling cards
 class CardScroll
     constructor: (@container) ->
         @cards = @container.querySelectorAll('article')
@@ -217,8 +220,11 @@ class CardScroll
         card.style.opacity = 1 - Math.abs(frac)
 
 
+# Scrolling background gradient and favicon
 class ThemeNav
     KEY: 'theme'
+    HEAD: document.querySelector('head')
+    APPLY_TO: document.documentElement
 
     constructor: (@themeLis) ->
         @themes = []
@@ -226,7 +232,7 @@ class ThemeNav
         @load(dom.storage(@KEY))
 
     index: (li) ->
-        theme = li.id
+        theme = li.className
         @themes.push(theme)
         li.onclick = =>
             @select(theme)
@@ -237,9 +243,41 @@ class ThemeNav
 
     select: (theme) ->
         args = @themes.slice()
-        args.unshift(document.body)
+        args.unshift(@APPLY_TO)
         dom.removeClass.apply(dom, args)
-        dom.addClass(document.body, theme)
+        dom.addClass(@APPLY_TO, theme)
+        @favicon()
+
+    favicon: ->
+        element = document.querySelector('.bg')
+        style = window.getComputedStyle(element, null)
+        bg = style.getPropertyValue('background-image')
+        [from, to] = bg.match(/rgb\([0-9]+, [0-9]+, [0-9]+\)/gi)
+
+        if from and to
+            canvas = document.createElement('canvas')
+            canvas.width = 16
+            canvas.height = 16
+
+            context = canvas.getContext('2d')
+            gradient = context.createLinearGradient(0, 16, 16, 0)
+            gradient.addColorStop(0, from)
+            gradient.addColorStop(1, to)
+
+            context.fillStyle = gradient
+            context.fillRect(0, 0, canvas.width, canvas.height)
+
+            icon = document.createElement('link')
+            icon.rel = 'icon'
+            icon.type = 'image/png'
+            icon.href = canvas.toDataURL()
+
+            if @icon
+                @HEAD.replaceChild(icon, @icon)
+            else
+                @HEAD.appendChild(icon)
+
+            @icon = icon
 
 
 # Initialize; exclude slowpokes

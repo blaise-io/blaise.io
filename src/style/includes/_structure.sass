@@ -12,10 +12,9 @@
         @extend %cover
         position: absolute
         overflow: auto
-        padding: $px-padding-L 0 0 $px-padding-L
+        padding: $px-padding-L 0 0 #{$px-padding-L * 2 + $px-card + $px-gutter}
         @each $prefix in $prefixes
             #{$prefix}transform-style: preserve-3d
-        margin: 0 0 0 #{$px-padding-L + $px-card + $px-gutter}
 
     article
         img

@@ -1,6 +1,7 @@
 # To do
 
+1. Finalize background gradients
+1. Check content
 1. Better content images
-1. Ensure graceful degradation in shitty browsers
-1. Favicon per theme
-1. Grunt for deploying
+1. Favicon mask
+1. Mobile icons

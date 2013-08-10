@@ -20,14 +20,17 @@ a
     right: 0
     bottom: 0
 
-%rounded-edge
+%card-edge
     overflow: hidden
     @each $prefix in $prefixes
         #{$prefix}border-radius: 1px
-        #{$prefix}box-shadow: 0 0 1px rgba(0,0,0, 0.1), 0 0 10px rgba(255, 255, 255, 0.3)
+        #{$prefix}box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 0 10px rgba(255, 255, 255, 0.35)
+
+        canvas
+            #{$prefix}border-radius: 1px
 
 %small-tile
-    @extend %rounded-edge
+    @extend %card-edge
     margin: 0 0 $px-gutter $px-gutter
     position: relative
     z-index: 3
@@ -35,7 +38,7 @@ a
     border: $px-padding-S solid $c-card
     width: $px-icon
     height: $px-icon
-    text-indent: 999em
+    text-indent: -999em
     overflow: hidden
 
     @each $prefix in $prefixes
