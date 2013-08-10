@@ -10,8 +10,18 @@ body
     padding: $px-padding-L
     height: 100%
 
+canvas
+    @each $prefix in $prefixes
+        #{$prefix}border-radius: 1px
+
 a
     color: $c-text
+
+@mixin gradient($season, $c1, $c2)
+    .#{$season} &
+        @each $prefix in $prefixes
+            background-image: #{$prefix}linear-gradient(225deg, $c1, $c2, $c1, $c2, $c1, $c2)
+
 
 %cover
     position: fixed
@@ -21,13 +31,10 @@ a
     bottom: 0
 
 %card-edge
+    @extend canvas
     overflow: hidden
     @each $prefix in $prefixes
-        #{$prefix}border-radius: 1px
         #{$prefix}box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 0 10px rgba(255, 255, 255, 0.35)
-
-        canvas
-            #{$prefix}border-radius: 1px
 
 %small-tile
     @extend %card-edge

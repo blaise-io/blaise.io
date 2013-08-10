@@ -29,21 +29,10 @@ body
         @each $prefix in $prefixes
             #{$prefix}animation: bganim 30s linear infinite
 
-    .spring &
-        @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(225deg, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2, $c-spring-1, $c-spring-2)
-
-    .summer &
-        @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(225deg, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2, $c-summer-1, $c-summer-2)
-
-    .autumn &
-        @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(225deg, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2, $c-autumn-1, $c-autumn-2)
-
-    .winter &
-        @each $prefix in $prefixes
-            background-image: #{$prefix}linear-gradient(225deg, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2, $c-winter-1, $c-winter-2)
+    @include gradient(spring, $c-spring-1, $c-spring-2)
+    @include gradient(summer, $c-summer-1, $c-summer-2)
+    @include gradient(autumn, $c-autumn-1, $c-autumn-2)
+    @include gradient(winter, $c-winter-1, $c-winter-2)
 
 .vignet
     @extend %cover
@@ -51,6 +40,7 @@ body
         #{$prefix}box-shadow: 0 0 10px rgba(0, 0, 0, .25) inset, 0 0 3px rgba(0, 0, 0, .25) inset, 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 0 1px rgba(255, 255, 255, 0.5) inset
 
 
+// Keyframes cannot be mixined
 @-webkit-keyframes bganim
     0%
         -webkit-transform: translate3d($bg-width, 0, 0)
