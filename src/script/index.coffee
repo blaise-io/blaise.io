@@ -179,7 +179,6 @@ class CardCanvas
 class CardScroll
     constructor: (@container) ->
         @cards = @container.querySelectorAll('article')
-        dom.addClass(document.documentElement, 'ENHANCED')
         @container.onscroll = window.onresize = window.onload = =>
             @updateAll()
         @updateAll();
@@ -210,7 +209,10 @@ class CardScroll
         @applyStyle(card, cw, frac)
 
     applyStyle: (card, cw, frac) ->
-        transform = "perspective(#{ cw }px) rotateX(#{ frac * Math.PI / 2 }rad)"
+        if frac
+            transform = "perspective(#{ cw }px) rotateX(#{ frac * 90 }deg)"
+        else
+            transform = ''
         dom.transform(card, transform)
         card.style.opacity = 1 - Math.abs(frac)
 
@@ -242,6 +244,7 @@ class ThemeNav
 
 # Initialize; exclude slowpokes
 if not (/(ios|android|mobile)/gi).test(navigator.userAgent)
+    dom.addClass(document.documentElement, 'ENHANCED')
     new CardScroll(document.querySelector('.cards'))
     new CanvasCutout(document.querySelectorAll('article'))
     new ThemeNav(document.querySelectorAll('.themes li'))

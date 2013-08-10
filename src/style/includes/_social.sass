@@ -1,18 +1,21 @@
 ul.social
-    width: $px-card
-    font-size: 0
     text-align: center
     margin-left: $px-padding-M
 
     .ENHANCED &
+        overflow: hidden
         clear: left
+        margin-left: #{$px-padding-L + $px-padding-M * 2 + $px-card - ($px-icon * 4 + $px-gutter * 4)}
+        width: $px-icon * 4 + $px-gutter * 4
+
+    a
         float: left
-        text-align: right
-        margin-left: #{$px-padding-L + $px-padding-M * 2}
+        background: url(about:blank) no-repeat 0 0 / 100% 100%
+        @extend %small-tile
 
-    li
-        display: inline-block
+        &:hover
+            background-color: rgba(0, 0, 0, .2)
 
-        a
-            display: block
-            @extend %small-tile
+    @each $social in (email, linkedin, facebook, github)
+        ##{$social} a
+            background-image: url(../img/#{$social}.png)

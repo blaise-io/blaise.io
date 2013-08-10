@@ -10,10 +10,6 @@ body
     padding: $px-padding-L
     height: 100%
 
-nav
-    position: relative
-    z-index: 2
-
 a
     color: $c-text
 
@@ -34,10 +30,11 @@ a
     @extend %rounded-edge
     margin: 0 0 $px-gutter $px-gutter
     position: relative
+    z-index: 3
     list-style: none
     border: $px-padding-S solid $c-card
-    width: 40px
-    height: 40px
+    width: $px-icon
+    height: $px-icon
     text-indent: 999em
     overflow: hidden
 
