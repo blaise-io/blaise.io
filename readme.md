@@ -1,3 +1,1 @@
-# To do
-
-1. Grunt deploy
+# [blaise.io](http://blaise.io)
