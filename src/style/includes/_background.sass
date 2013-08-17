@@ -1,7 +1,9 @@
-body
+html
+    @include gradient(#{''}, spring, $c-spring-1, $c-spring-2)
+
     .ENHANCED &
+        background-image: none
         overflow: hidden
-        padding: 0
 
     &.summer
         background-color: $c-summer-1
@@ -29,15 +31,19 @@ body
         @each $prefix in $prefixes
             #{$prefix}animation: bganim 30s linear infinite
 
-    @include gradient(spring, $c-spring-1, $c-spring-2)
-    @include gradient(summer, $c-summer-1, $c-summer-2)
-    @include gradient(autumn, $c-autumn-1, $c-autumn-2)
-    @include gradient(winter, $c-winter-1, $c-winter-2)
+.ENHANCED
+    @include gradient(#{'.bg'}, winter, $c-winter-1, $c-winter-2)
+    @include gradient(#{'.bg'}, spring, $c-spring-1, $c-spring-2)
+    @include gradient(#{'.bg'}, summer, $c-summer-1, $c-summer-2)
+    @include gradient(#{'.bg'}, autumn, $c-autumn-1, $c-autumn-2)
 
 .vignet
-    @extend %cover
-    @each $prefix in $prefixes
-        #{$prefix}box-shadow: 0 0 10px rgba(0, 0, 0, .25) inset, 0 0 3px rgba(0, 0, 0, .25) inset, 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 0 1px rgba(255, 255, 255, 0.5) inset
+    display: none
+
+    .ENHANCED
+        @extend %cover
+        @each $prefix in $prefixes
+            #{$prefix}box-shadow: 0 0 10px rgba(0, 0, 0, .25) inset, 0 0 3px rgba(0, 0, 0, .25) inset, 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 0 1px rgba(255, 255, 255, 0.5) inset
 
 
 // Keyframes cannot be mixined

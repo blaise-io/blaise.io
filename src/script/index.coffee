@@ -225,11 +225,12 @@ class ThemeNav
     KEY: 'theme'
     ICON: document.querySelector('link[rel=icon]')
     APPLY_TO: document.documentElement
+    DEFAULT_THEME: dom.getClassNameArr(document.documentElement)[0],
 
     constructor: (@themeLis) ->
         @themes = []
         @index(li) for li in @themeLis
-        @load(dom.storage(@KEY))
+        @load(dom.storage(@KEY) || @DEFAULT_THEME)
 
     index: (li) ->
         theme = li.className

@@ -1,21 +1,35 @@
 ul.social
     text-align: center
-    margin-left: $px-padding-M
 
     .ENHANCED &
         overflow: hidden
         clear: left
-        margin-left: #{$px-padding-L + $px-padding-M * 2 + $px-card - ($px-icon * 4 + $px-gutter * 4)}
+        margin-left: #{$px-padding-L + $px-padding-M * 2 + $px-card - ($px-icon * 4 + $px-gutter * 3)}
         width: $px-icon * 4 + $px-gutter * 4
 
     a
+        @extend %small-tile
+        width: #{ceil(($px-padding-M * 2 + $px-card) / 4 - 1)}
+        height: #{($px-padding-M * 2 + $px-card) / 4 - 1}
         float: left
         background-repeat: no-repeat
         background-size: 100% 100%
-        @extend %small-tile
+        border-width: $px-padding-L
+
+        .ENHANCED &
+            width: $px-icon
+            height: $px-icon
+            border-width: $px-padding-S
 
         &:hover
             background-color: rgba(0, 0, 0, .2)
+
+    li:first-child a
+        margin-left: 0
+        width: #{floor(($px-padding-M * 2 + $px-card) / 4 - 1)}
+
+        .ENHANCED &
+            width: $px-icon
 
     @each $social in (email, linkedin, facebook, github)
         li.#{$social} a

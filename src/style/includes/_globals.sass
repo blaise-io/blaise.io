@@ -9,6 +9,14 @@ body
     color: $c-text
     padding: $px-padding-L
     height: 100%
+    width: #{($px-padding-M * 2) + $px-card}
+    margin: 0 auto
+
+    .ENHANCED &
+        overflow: hidden
+        margin: 0
+        padding: 0
+
 
 canvas
     @each $prefix in $prefixes
@@ -17,11 +25,10 @@ canvas
 a
     color: $c-text
 
-@mixin gradient($season, $c1, $c2)
-    .#{$season} &
+@mixin gradient($selector, $season, $c1, $c2)
+    &.#{$season} #{$selector}
         @each $prefix in $prefixes
             background-image: #{$prefix}linear-gradient(225deg, $c1, $c2, $c1, $c2, $c1, $c2)
-
 
 %cover
     position: fixed
@@ -38,6 +45,7 @@ a
 
 %small-tile
     @extend %card-edge
+    display: block
     margin: 0 0 $px-gutter $px-gutter
     position: relative
     z-index: 3
