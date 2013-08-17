@@ -223,7 +223,7 @@ class CardScroll
 # Scrolling background gradient and favicon
 class ThemeNav
     KEY: 'theme'
-    HEAD: document.querySelector('head')
+    ICON: document.querySelector('link[rel=icon]')
     APPLY_TO: document.documentElement
 
     constructor: (@themeLis) ->
@@ -239,6 +239,15 @@ class ThemeNav
             dom.storage(@KEY, theme)
 
     load: (theme) ->
+        @mask = new Image()
+        @mask.src = @ICON.href
+        if (@mask.complete)
+            @loadTheme(theme)
+        else
+            @mask.onload = =>
+                @loadTheme(theme)
+
+    loadTheme: (theme) ->
         @select(theme) if theme in @themes
 
     select: (theme) ->
@@ -256,13 +265,16 @@ class ThemeNav
 
         if from and to
             canvas = document.createElement('canvas')
-            canvas.width = 16
-            canvas.height = 16
+            w = canvas.width = 16
+            h = canvas.height = 16
 
             context = canvas.getContext('2d')
-            gradient = context.createLinearGradient(0, 16, 16, 0)
+            gradient = context.createLinearGradient(0, w, h, 0)
             gradient.addColorStop(0, from)
             gradient.addColorStop(1, to)
+
+            context.drawImage(@mask, 0, 0, w, h)
+            context.globalCompositeOperation = 'source-atop'
 
             context.fillStyle = gradient
             context.fillRect(0, 0, canvas.width, canvas.height)
@@ -272,12 +284,8 @@ class ThemeNav
             icon.type = 'image/png'
             icon.href = canvas.toDataURL()
 
-            if @icon
-                @HEAD.replaceChild(icon, @icon)
-            else
-                @HEAD.appendChild(icon)
-
-            @icon = icon
+            @ICON.parentNode.replaceChild(icon, @ICON)
+            @ICON = icon
 
 
 # Initialize; exclude slowpokes
