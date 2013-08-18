@@ -6,7 +6,7 @@
 Thumbs.db
 desktop.ini
 
-# Generated files
+node_modules
 build
 *.js
 *.css
