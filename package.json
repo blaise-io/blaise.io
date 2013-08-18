@@ -7,6 +7,7 @@
         "grunt-contrib-cssmin": "~0.6.1",
         "grunt-image-embed": "~0.3.1",
         "grunt-contrib-copy": "~0.4.1",
-        "grunt-string-replace": "~0.2.4"
+        "grunt-string-replace": "~0.2.4",
+        "grunt-contrib-commands": "~0.1.3"
     }
 }

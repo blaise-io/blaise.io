@@ -39,9 +39,19 @@ module.exports = (grunt) ->
                 files:
                     'build/index.html': 'build/index.html'
 
+        command:
+            copy_files_remote:
+                cmd: 'scp -r build/ ubuntu@blaise.io:/var/tmp/blaise.io/'
+            deploy_file_remote:
+                cmd: 'ssh ubuntu@blaise.io "~/update_blaiseio.sh"'
+
+
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-image-embed'
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-string-replace'
+    grunt.loadNpmTasks 'grunt-contrib-commands'
+
     grunt.registerTask 'default', ['uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
+    grunt.registerTask 'deploy', ['command']
