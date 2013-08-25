@@ -41,9 +41,9 @@ module.exports = (grunt) ->
 
         command:
             copy_files_remote:
-                cmd: 'scp -r build/ ubuntu@blaise.io:/var/tmp/blaise.io/'
+                cmd: 'scp -r build/* ubuntu@blaise.io:/var/tmp/blaise.io/'
             deploy_file_remote:
-                cmd: 'ssh ubuntu@blaise.io "~/update_blaiseio.sh"'
+                cmd: 'ssh ubuntu@blaise.io -t "~/update_blaiseio.sh"'
 
 
     grunt.loadNpmTasks 'grunt-contrib-uglify'
