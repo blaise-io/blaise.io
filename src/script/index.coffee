@@ -18,12 +18,17 @@ dom =
         dom.setClassNameArr(element, ret)
 
     transform: (element, transform) ->
-        pres = ['transform', 'webkitTransform', 'mozTransform', 'msTransform']
-        if not dom._transform
-            for pre in pres
-                if typeof element.style[pre] isnt 'undefined'
-                    dom._transform = pre
-        element.style[dom._transform] = transform
+        if not dom._transformPrefix
+            prefixes = [
+                'transform',
+                'webkitTransform',
+                'mozTransform',
+                'msTransform'
+            ]
+            for prefix in prefixes
+                if typeof element.style[prefix] isnt 'undefined'
+                    dom._transformPrefix = prefix
+        element.style[dom._transformPrefix] = transform
 
     storage: (key, val) ->
         if key and localStorage?
@@ -34,8 +39,9 @@ dom =
 
     webFontLoaded: (font, callback) ->
         dummy = document.createElement('span')
-        dummy.innerHTML = '!@#$%'
+        dummy.style.visibility = 'hidden'
         dummy.style.font = '300px serif'
+        dummy.innerHTML = '!@#$%'
         document.body.appendChild(dummy)
         width = dummy.offsetWidth
         dummy.style.font = "300px #{font}, serif"
@@ -192,7 +198,6 @@ class CardScroll
         @updateCard(card, v1, v2) for card in @cards
 
     updateCard: (card, v1, v2) ->
-        cw = card.offsetWidth
         ch = card.offsetHeight
         c1 = card.offsetTop
         c2 = c1 + ch
@@ -208,14 +213,14 @@ class CardScroll
             dom.addClass(card, 'bottom')
             if v2 > c1
                 frac = (v2 - c2) / ch
+        @applyStyle(card, ch, frac)
 
-        @applyStyle(card, cw, frac)
-
-    applyStyle: (card, cw, frac) ->
+    applyStyle: (card, ch, frac) ->
+        transform = ''
         if frac
-            transform = "perspective(#{ cw }px) rotateX(#{ frac * 90 }deg)"
-        else
-            transform = ''
+            transform += "perspective(#{ ch + (ch * 2 / 3) }px) "
+            transform += "rotateX(#{ frac * 90 }deg)"
+
         dom.transform(card, transform)
         card.style.opacity = 1 - Math.abs(frac)
 
