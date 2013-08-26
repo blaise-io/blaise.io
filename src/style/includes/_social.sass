@@ -13,12 +13,13 @@ ul.social
         height: #{($px-padding-M * 2 + $px-card) / 4 - 1}
         float: left
         background-repeat: no-repeat
-        background-size: 100% 100%
+        background-size: 110% 110% // Fix iOS rounding issue with overlap.
         border-width: $px-padding-L
 
         .ENHANCED &
             width: $px-icon
             height: $px-icon
+            background-size: $px-icon $px-icon
             border-width: $px-padding-S
 
         &:hover
