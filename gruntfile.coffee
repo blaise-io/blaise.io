@@ -1,10 +1,21 @@
 module.exports = (grunt) ->
 
     grunt.initConfig
-        uglify:
+        gcc_rest:
             dist:
                 files:
                     '/var/tmp/index.min.js': ['src/script/index.js']
+                options:
+                    params:
+                        language: 'ECMASCRIPT5_STRICT',
+                        compilation_level: 'ADVANCED_OPTIMIZATIONS',
+                        warning_level: 'VERBOSE',
+                        use_types_for_optimization: 'true'
+
+        uglify:
+            dist:
+                files:
+                    '/var/tmp/index.min.js': ['/var/tmp/index.min.js'],
 
         imageEmbed:
             dist:
@@ -46,6 +57,7 @@ module.exports = (grunt) ->
                 cmd: 'ssh ubuntu@blaise.io -t "~/update_blaiseio.sh"'
 
 
+    grunt.loadNpmTasks 'grunt-gcc-rest'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-image-embed'
@@ -53,5 +65,5 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-string-replace'
     grunt.loadNpmTasks 'grunt-contrib-commands'
 
-    grunt.registerTask 'default', ['uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
+    grunt.registerTask 'default', ['gcc_rest', 'uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
     grunt.registerTask 'deploy', ['command']
