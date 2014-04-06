@@ -1,10 +1,21 @@
 module.exports = (grunt) ->
 
     grunt.initConfig
+        gcc_rest:
+            dist:
+                files:
+                    '/var/tmp/index.min.js': ['src/script/index.js']
+                options:
+                    params:
+                        language: 'ECMASCRIPT5_STRICT',
+                        compilation_level: 'ADVANCED_OPTIMIZATIONS',
+                        warning_level: 'VERBOSE',
+                        use_types_for_optimization: 'true'
+
         uglify:
             dist:
                 files:
-                    '/var/tmp/index.min.js': ['src/script/*.js']
+                    '/var/tmp/index.min.js': ['/var/tmp/index.min.js', 'src/script/analytics.js'],
 
         imageEmbed:
             dist:
