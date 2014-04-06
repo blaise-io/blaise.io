@@ -4,7 +4,7 @@ module.exports = (grunt) ->
         uglify:
             dist:
                 files:
-                    '/var/tmp/index.min.js': ['src/script/index.js']
+                    '/var/tmp/index.min.js': ['src/script/*.js']
 
         imageEmbed:
             dist:
