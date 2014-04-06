@@ -15,7 +15,7 @@ module.exports = (grunt) ->
         uglify:
             dist:
                 files:
-                    '/var/tmp/index.min.js': ['/var/tmp/index.min.js'],
+                    '/var/tmp/index.min.js': ['/var/tmp/index.min.js', 'src/script/analytics.js'],
 
         imageEmbed:
             dist:
@@ -57,7 +57,6 @@ module.exports = (grunt) ->
                 cmd: 'ssh ubuntu@blaise.io -t "~/update_blaiseio.sh"'
 
 
-    grunt.loadNpmTasks 'grunt-gcc-rest'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-image-embed'
@@ -65,5 +64,5 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-string-replace'
     grunt.loadNpmTasks 'grunt-contrib-commands'
 
-    grunt.registerTask 'default', ['gcc_rest', 'uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
+    grunt.registerTask 'default', ['uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
     grunt.registerTask 'deploy', ['command']
