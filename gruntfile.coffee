@@ -32,7 +32,7 @@ module.exports = (grunt) ->
         copy:
             main:
                 files: [
-                    src: ['index.html', 'favicon.ico', 'content/*', 'src/font/*']
+                    src: ['index.html', 'favicon.ico', 'content/*']
                     dest: 'build/'
                 ]
 
@@ -51,6 +51,7 @@ module.exports = (grunt) ->
                     'build/index.html': 'build/index.html'
 
 
+    grunt.loadNpmTasks 'grunt-gcc-rest'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-image-embed'
@@ -58,4 +59,4 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-string-replace'
     grunt.loadNpmTasks 'grunt-contrib-commands'
 
-    grunt.registerTask 'default', ['uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
+    grunt.registerTask 'default', ['gcc_rest', 'uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
