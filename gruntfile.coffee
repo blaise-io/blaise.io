@@ -4,7 +4,7 @@ module.exports = (grunt) ->
         gcc_rest:
             dist:
                 files:
-                    '/var/tmp/index.min.js': ['src/script/index.js']
+                    'tmp/index.min.js': ['src/script/index.js']
                 options:
                     params:
                         language: 'ECMASCRIPT5_STRICT',
@@ -15,19 +15,19 @@ module.exports = (grunt) ->
         uglify:
             dist:
                 files:
-                    '/var/tmp/index.min.js': ['/var/tmp/index.min.js', 'src/script/analytics.js'],
+                    'tmp/index.min.js': ['tmp/index.min.js', 'src/script/analytics.js'],
 
         imageEmbed:
             dist:
                 src: 'src/style/index.css'
-                dest: '/var/tmp/index.min.css'
+                dest: 'tmp/index.min.css'
                 options:
                     deleteAfterEncoding: false
 
         cssmin:
             combine:
                 files:
-                    '/var/tmp/index.min.css': ['/var/tmp/index.min.css']
+                    'tmp/index.min.css': ['tmp/index.min.css']
 
         copy:
             main:
@@ -41,20 +41,14 @@ module.exports = (grunt) ->
                 options:
                     replacements: [
                         pattern: '<script src="src/script/index.js"></script>'
-                        replacement: '<script><%= grunt.file.read("/var/tmp/index.min.js") %></script>'
+                        replacement: '<script><%= grunt.file.read("tmp/index.min.js") %></script>'
                     ,
                         pattern: '<link rel="stylesheet" href="src/style/index.css">'
-                        replacement: '<style><%= grunt.file.read("/var/tmp/index.min.css") %></style>'
+                        replacement: '<style><%= grunt.file.read("tmp/index.min.css") %></style>'
                     ]
 
                 files:
                     'build/index.html': 'build/index.html'
-
-        command:
-            copy_files_remote:
-                cmd: 'scp -r build/* ubuntu@blaise.io:/var/tmp/blaise.io/'
-            deploy_file_remote:
-                cmd: 'ssh ubuntu@blaise.io -t "~/update_blaiseio.sh"'
 
 
     grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -65,4 +59,3 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-commands'
 
     grunt.registerTask 'default', ['uglify', 'imageEmbed', 'cssmin', 'copy', 'string-replace']
-    grunt.registerTask 'deploy', ['command']
